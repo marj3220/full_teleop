@@ -99,10 +99,21 @@ FullTeleop::FullTeleop(ros::NodeHandle* nh, ros::NodeHandle* nh_param)
   }
   else
   {
-    nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["yaw"], 0);
+    //Yaw
+    nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["yaw"], 3);
     nh_param->param<double>("scale_angular", pimpl_->scale_angular_map["normal"]["yaw"], 0.5);
     nh_param->param<double>("scale_angular_turbo",
         pimpl_->scale_angular_map["turbo"]["yaw"], pimpl_->scale_angular_map["normal"]["yaw"]);
+    //Pitch
+    nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["pitch"], 4);
+    nh_param->param<double>("scale_angular", pimpl_->scale_angular_map["normal"]["pitch"], 0.5);
+    nh_param->param<double>("scale_angular_turbo",
+        pimpl_->scale_angular_map["turbo"]["pitch"], pimpl_->scale_angular_map["normal"]["pitch"]);
+    //Roll
+    nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["roll"], 5);
+    nh_param->param<double>("scale_angular", pimpl_->scale_angular_map["normal"]["roll"], 0.5);
+    nh_param->param<double>("scale_angular_turbo",
+        pimpl_->scale_angular_map["turbo"]["roll"], pimpl_->scale_angular_map["normal"]["roll"]);
   }
 
   ROS_INFO_NAMED("FullTeleop", "Teleop enable button %i.", pimpl_->enable_button);
