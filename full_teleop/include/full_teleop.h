@@ -40,6 +40,6 @@ private:
   Impl* pimpl_;
 };
 
-}  // namespace teleop_twist_joy
+}  // namespace full_teleop
 
 #endif  // FULL_TELEOP_H

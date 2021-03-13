@@ -21,14 +21,14 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 */
 
 #include "ros/ros.h"
-#include "full_teleop/include/full_teleop.h"
+#include "../include/full_teleop.h"
 
 int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "full_teleop_node");
 
   ros::NodeHandle nh(""), nh_param("~");
-  full_telep::FullTeleop joy_teleop(&nh, &nh_param);
+  full_teleop::FullTeleop joy_teleop(&nh, &nh_param);
 
   ros::spin();
 }

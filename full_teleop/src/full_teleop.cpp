@@ -22,7 +22,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include "geometry_msgs/Twist.h"
 #include "ros/ros.h"
 #include "sensor_msgs/Joy.h"
-#include "full_teleop/include/full_teleop.h"
+#include "../include/full_teleop.h"
 
 #include <map>
 #include <string>
