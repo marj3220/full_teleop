@@ -69,7 +69,7 @@ FullTeleop::FullTeleop(ros::NodeHandle* nh, ros::NodeHandle* nh_param)
   pimpl_->joy_sub = nh->subscribe<sensor_msgs::Joy>("joy", 1, &FullTeleop::Impl::joyCallback, pimpl_);
 
   nh_param->param<int>("enable_button", pimpl_->enable_button, 0);
-  nh_param->param<int>("enable_turbo_button", pimpl_->enable_turbo_button, -1);
+  nh_param->param<int>("enable_turbo_button", pimpl_->enable_turbo_button, 1);
 
   if (nh_param->getParam("axis_linear", pimpl_->axis_linear_map))
   {
@@ -99,17 +99,17 @@ FullTeleop::FullTeleop(ros::NodeHandle* nh, ros::NodeHandle* nh_param)
   }
   else
   {
-    //Yaw
+    // Yaw
     nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["yaw"], 3);
     nh_param->param<double>("scale_angular", pimpl_->scale_angular_map["normal"]["yaw"], 0.5);
     nh_param->param<double>("scale_angular_turbo",
         pimpl_->scale_angular_map["turbo"]["yaw"], pimpl_->scale_angular_map["normal"]["yaw"]);
-    //Pitch
+    // Pitch
     nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["pitch"], 4);
     nh_param->param<double>("scale_angular", pimpl_->scale_angular_map["normal"]["pitch"], 0.5);
     nh_param->param<double>("scale_angular_turbo",
         pimpl_->scale_angular_map["turbo"]["pitch"], pimpl_->scale_angular_map["normal"]["pitch"]);
-    //Roll
+    // Roll
     nh_param->param<int>("axis_angular", pimpl_->axis_angular_map["roll"], 5);
     nh_param->param<double>("scale_angular", pimpl_->scale_angular_map["normal"]["roll"], 0.5);
     nh_param->param<double>("scale_angular_turbo",
