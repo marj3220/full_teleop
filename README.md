@@ -6,4 +6,4 @@ Teleoporation package that :
 
 ### Made for the [QuadrUS](https://github.com/olivierfournier2/S4H2021-QuadrUS) open-source project 
 
-###### Based on the [teleop_twist_joy](https://github.com/ros-teleop/teleop_twist_joy) package.
+###### Based on the [teleop_twist_joy](https://github.com/ros-teleop/teleop_twist_joy) package. (BSD Software License Agreement)
