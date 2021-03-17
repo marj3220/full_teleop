@@ -40,13 +40,15 @@ struct FullTeleop::Impl
 {
   void joyCallback(const sensor_msgs::Joy::ConstPtr& joy);
   void sendCmdVelMsg(const sensor_msgs::Joy::ConstPtr& joy_msg, const std::string& which_map);
+  void rampUp(const sensor_msgs::Joy::ConstPtr& joy_msg, const std::string& which_map);
 
   ros::Subscriber joy_sub;
   ros::Publisher cmd_vel_pub;
 
   int enable_button;
   int enable_turbo_button;
-  double current_cmd = 0;
+  double current_cmd[6] = {0,0,0,0,0,0};
+  double tol_step[6] = {0.01, 0.01, 0.01, 0.01, 0.01, 0.01};
 
   std::map<std::string, int> axis_linear_map;
   std::map< std::string, std::map<std::string, double> > scale_linear_map;
@@ -153,12 +155,14 @@ double getVal(const sensor_msgs::Joy::ConstPtr& joy_msg, const std::map<std::str
 }
 
 
-double FullTeleop::Impl::rampUp(const sensor_msgs::Joy::ConstPtr& joy_msg,
+void FullTeleop::Impl::rampUp(const sensor_msgs::Joy::ConstPtr& joy_msg,
                                          const std::string& which_map)
 {
   // Initializes with zeros by default.
-  double cmd_vel_ramped[6];
   geometry_msgs::Twist cmd_vel_msg;
+  
+  double true_step[6] = {0,0,0,0,0,0};
+  double cmd_vel_ramped[6];
 
   cmd_vel_ramped[0] = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "x");
   cmd_vel_ramped[1] = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "y");
@@ -166,29 +170,41 @@ double FullTeleop::Impl::rampUp(const sensor_msgs::Joy::ConstPtr& joy_msg,
   cmd_vel_ramped[3] = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "yaw");
   cmd_vel_ramped[4] = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "pitch");
   cmd_vel_ramped[5] = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "roll");
-  
-  while (stop==false)
-  {
-    stop = true;
 
-    for (int i = 0; i < 6; i++)
-    {
+  for (int i = 0; i < 6; i++)
+  {
+    if (cmd_vel_ramped[i] > current_cmd[i]){
       true_step[i] = cmd_vel_ramped[i] - current_cmd[i];
       
-      if true_step[i] > tol_step[i]{
+      if (true_step[i] > tol_step[i]){
         current_cmd[i] += tol_step[i];
       }
       else{
         current_cmd[i] += true_step[i];
       }
-      if current_cmd != cmd_vel_ramped {
-              stop = false;
-            }
+    }
+    else if (cmd_vel_ramped[i] < current_cmd[i]){
+      true_step[i] = current_cmd[i] - cmd_vel_ramped[i];
+      
+      if (true_step[i] > tol_step[i]){
+        current_cmd[i] -= tol_step[i];
+      }
+      else{
+        current_cmd[i] -= true_step[i];
+      }
     }
   }
+  
+  cmd_vel_msg.linear.x = current_cmd[0];
+  cmd_vel_msg.linear.y = current_cmd[1];
+  cmd_vel_msg.linear.z = current_cmd[2];
+  cmd_vel_msg.angular.z = current_cmd[3];
+  cmd_vel_msg.angular.y = current_cmd[4];
+  cmd_vel_msg.angular.x = current_cmd[5];
 
-  cmd_vel_pub.publish(cmd_vel_ramped);  
-
+  
+cmd_vel_pub.publish(cmd_vel_msg);
+sent_disable_msg = false;
 }
 
 
@@ -216,12 +232,12 @@ void FullTeleop::Impl::joyCallback(const sensor_msgs::Joy::ConstPtr& joy_msg)
       joy_msg->buttons.size() > enable_turbo_button &&
       joy_msg->buttons[enable_turbo_button])
   {
-    sendCmdVelMsg(joy_msg, "turbo"); //Change to ramp-up
+    rampUp(joy_msg, "turbo"); //Change to ramp-up
   }
   else if (joy_msg->buttons.size() > enable_button &&
            joy_msg->buttons[enable_button])
   {
-    sendCmdVelMsg(joy_msg, "normal"); //Change to ramp-up
+    rampUp(joy_msg, "normal"); //Change to ramp-up
   }
   else
   {
@@ -232,6 +248,10 @@ void FullTeleop::Impl::joyCallback(const sensor_msgs::Joy::ConstPtr& joy_msg)
       // Initializes with zeros by default.
       geometry_msgs::Twist cmd_vel_msg;
       cmd_vel_pub.publish(cmd_vel_msg);
+      for (int i = 0; i < 6; i++)
+      {
+          current_cmd[i] = 0.0;
+      }
       sent_disable_msg = true;
     }
   }
