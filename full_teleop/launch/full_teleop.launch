@@ -1,0 +1,12 @@
+<launch>
+ <!-- full_teleop Node-->
+  <node pkg="full_teleop" type="full_teleop_node" name="full_teleop"/>
+
+ <!-- joy node -->
+  <node respawn="true" pkg="joy" type="joy_node" name="autorepeat_joy" >
+    <param name="dev" type="string" value="/dev/input/js0" />
+    <param name="deadzone" value="0.05" />
+    <param name="autorepeat_rate" value="100"/>
+ </node>
+
+</launch>
