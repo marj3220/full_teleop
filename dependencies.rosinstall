@@ -1,0 +1,7 @@
+- git:
+    local-name: joystick_drivers
+    uri: https://github.com/ros-drivers/joystick_drivers.git
+    
+    local-name: roscpp
+    uri: https://github.com/ros/ros_comm.git
+    
