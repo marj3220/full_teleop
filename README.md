@@ -1,6 +1,6 @@
 # full_teleop
 
-[![Build Status](https://www.travis-ci.com/marj3220/full_teleop.svg?branch=main)](https://www.travis-ci.com/marj3220/full_teleop)
+[![Build Status](https://www.travis-ci.com/marj3220/full_teleop.svg?branch=main)](https://www.travis-ci.com/marj3220/full_teleop) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Teleoporation package that : 
 * Lets you control all 3 linear velocities and all 3 angular velocities.
