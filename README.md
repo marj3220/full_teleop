@@ -1,6 +1,12 @@
-# full_teleop
+# FULL_TELEOP
 
-[![Build Status](https://www.travis-ci.com/marj3220/full_teleop.svg?branch=main)](https://www.travis-ci.com/marj3220/full_teleop) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+<p align="center">
+  # FULL_TELEOP
+  ***
+  ### Full Teleop Package | UdeS-GRO
+  [![Build Status](https://www.travis-ci.com/marj3220/full_teleop.svg?branch=main)](https://www.travis-ci.com/marj3220/full_teleop) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+</p>
+
 
 Teleoporation package that : 
 * Lets you control all 3 linear velocities and all 3 angular velocities.
